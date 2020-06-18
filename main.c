@@ -121,9 +121,9 @@ void inserir(tipo_abb **t, char tNome_cliente[70]) {
 		(*t)->esq = NULL;
 		(*t)->dir = NULL;
 	} else if (strcmp(tNome_cliente, (*t)->nome_cliente) > 0)
-		inserir(&((*t)->dir), tNome_cliente);
+		inserir(&(*t)->dir, tNome_cliente);
 	else
-		inserir(&((*t)->esq), tNome_cliente);
+		inserir(&(*t)->esq, tNome_cliente);
 }
 tipo_abb* pesquisar(tipo_abb **t, char tNome_cliente[70]) {
 	if (t != NULL) {
