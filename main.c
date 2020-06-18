@@ -117,7 +117,7 @@ void inserir(tipo_abb **t, char tNome_cliente[70]) {
 		(*t)->produtos = inserirDadosProduto();
 		(*t)->dataPedido = inserirDadosData();
 		strcpy((*t)->nome_cliente, tNome_cliente);
-		(*t)->valor_total = valorTotalProdutos(&((*t)->produtos));
+		(*t)->valor_total = valorTotalProdutos(&(*t)->produtos);
 		(*t)->esq = NULL;
 		(*t)->dir = NULL;
 	} else if (strcmp(tNome_cliente, (*t)->nome_cliente) > 0)
@@ -130,9 +130,9 @@ tipo_abb* pesquisar(tipo_abb **t, char tNome_cliente[70]) {
 		if (strcmp((*t)->nome_cliente, tNome_cliente) == 0)
 			return *t;
 		else if (strcmp(tNome_cliente, (*t)->nome_cliente) > 0)
-			pesquisar(&((*t)->dir), tNome_cliente);
+			pesquisar(&(*t)->dir, tNome_cliente);
 		else if (strcmp(tNome_cliente, (*t)->nome_cliente) < 0)
-			pesquisar(&((*t)->esq), tNome_cliente);
+			pesquisar(&(*t)->esq, tNome_cliente);
 		else
 			return NULL;
 	} else
@@ -142,7 +142,7 @@ void printArvore(tipo_abb **arv_encontrada) {
 	if (*arv_encontrada != NULL) {
 		printf("\nNome: %s", (*arv_encontrada)->nome_cliente);
 		printf("\nValor total: %.2f", (*arv_encontrada)->valor_total);
-		exibirNaOrdemProdutos(&((*arv_encontrada)->produtos));
+		exibirNaOrdemProdutos(&(*arv_encontrada)->produtos);
 	}
 }
 void emOrdem(tipo_abb **No) {
@@ -154,12 +154,12 @@ void emOrdem(tipo_abb **No) {
 		printf("Data do pedido: ");
 		exibirDataPedido(&((*No)->dataPedido));
 		printf("\n\n");
-		exibirNaOrdemProdutos(&((*No)->produtos));
+		exibirNaOrdemProdutos(&(*No)->produtos);
 		printf("\n");
 		printf("Valor total do Pedido: ");
 		printf("%.2f", (*No)->valor_total);
 		printf("\n");
-		emOrdem(&((*No)->dir));
+		emOrdem(&(*No)->dir);
 
 	}
 }
@@ -170,9 +170,9 @@ void excluirNo(tipo_abb **arvore, char tNome_cliente[70]) { //
 
 	if (*arvore != NULL) {
 		if (strcmp(tNome_cliente, (*arvore)->nome_cliente) > 0)
-			excluirNo(&((*arvore)->dir), tNome_cliente);
+			excluirNo(&(*arvore)->dir, tNome_cliente);
 		else if (strcmp(tNome_cliente, (*arvore)->nome_cliente) < 0)
-			excluirNo(&((*arvore)->esq), tNome_cliente);
+			excluirNo(&(*arvore)->esq, tNome_cliente);
 		else if (((*arvore)->esq != NULL) && ((*arvore)->dir != NULL)) {
 			aux = menor_valor((*arvore)->dir); // variavel aux recebe o endereço do menor valor na subárvore direita
 			strcpy((*arvore)->nome_cliente, (aux->nome_cliente)); // o nó a ser retirado recebe o valor do nó que contem o menor valor da subárvore direita
@@ -323,11 +323,11 @@ float valorTotalProdutos(ListaDuplaEncadeada *produtos) { //
 void exibirDataValorPedido(tipo_abb **arv_encontrada) {
 	printf("\n------DADOS DO PEDIDO------\n");
 	printf("Data do pedido: ");
-	exibirDataPedido(&((*arv_encontrada)->dataPedido));
+	exibirDataPedido(&(*arv_encontrada)->dataPedido);
 	printf("\nValor total do Pedido: ");
 	printf("%.2f", (*arv_encontrada)->valor_total);
 	printf("\n");
-	exibirNaOrdemProdutos(&((*arv_encontrada)->produtos));
+	exibirNaOrdemProdutos(&(*arv_encontrada)->produtos);
 }
 void exibirPedidosComValorAcima(tipo_abb **arv_encontrada, float valorAcima) {
 	if (*arv_encontrada != NULL) {
@@ -335,12 +335,12 @@ void exibirPedidosComValorAcima(tipo_abb **arv_encontrada, float valorAcima) {
 		if ((*arv_encontrada)->valor_total > valorAcima) {
 			printf("\n--------------\n");
 			printf("Data do pedido: ");
-			exibirDataPedido(&((*arv_encontrada)->dataPedido));
+			exibirDataPedido(&(*arv_encontrada)->dataPedido);
 			printf("\nValor total do Pedido: ");
 			printf("%.2f", (*arv_encontrada)->valor_total);
 			printf("\n");
-			exibirNaOrdemProdutos(&((*arv_encontrada)->produtos));
+			exibirNaOrdemProdutos(&(*arv_encontrada)->produtos);
 		}
-		exibirPedidosComValorAcima(&((*arv_encontrada)->dir),valorAcima);
+		exibirPedidosComValorAcima(&(*arv_encontrada)->dir,valorAcima);
 	}
 }

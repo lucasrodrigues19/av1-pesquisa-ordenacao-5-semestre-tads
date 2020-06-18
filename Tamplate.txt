@@ -15,7 +15,7 @@ descrição do produto (string com 50 caracteres),
 quantidade (inteiro) e valor do produto (float). 
 A organização da árvore deve ser baseada no campo nome do cliente. 
 Após a inserção de 10 pedidos, faça a busca pelo campo nome e, caso ele seja encontrado,
-exiba a data do pedido, o valor total e os itens.
+ exiba a data do pedido, o valor total e os itens.
 Na sequência, execute a remoção de um pedido o qual deverá ser solicitado pelo usuário. 
 Por fim, exiba todos os pedidos em ordem crescente pelo nome do cliente e 
 faça uma listagem dos pedidos acima de 500,00.
