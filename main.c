@@ -55,7 +55,7 @@ void exibirDataValorPedido(tipo_abb **arv_encontrada);
 void exibirPedidosComValorAcima(tipo_abb **arv_encontrada, float valorAcima);
 
 
-int main() {
+main() {
 	tipo_abb *arv_encontrada;
 	tipo_abb *arvore;
 	char tNome_cliente[70], tDesc_prod;
@@ -100,12 +100,11 @@ int main() {
 	printf("\n\n--------Em ordem por nome do cliente: ------------\n\n");
 	exibirNaOrdemArvore(&arvore);
 
-	printf("\n\nExibir Pedidos acima de: ");
-		scanf("%f",&valorAcima);
+		valorAcima = 500;
 		printf("\n------PEDIDOS ACIMA DE %.2f------\n", valorAcima);
 		exibirPedidosComValorAcima(&arvore,valorAcima);
 
-	return 0;
+	getchar();
 }
 void criarArvore(tipo_abb **arvore) {
 	*arvore = NULL;
@@ -166,7 +165,7 @@ void exibirNaOrdemArvore(tipo_abb **No) {
 	}
 }
 void excluirNo(tipo_abb **arvore, char tNome_cliente[70]) { //
-	tipo_abb *aux = (tipo_abb*) malloc(sizeof(tipo_abb)); // variável para auxiliar a busca pelo menor valor da subárvore direita
+	tipo_abb *aux = (tipo_abb*) malloc(sizeof(tipo_abb));
 	if (strcmp((*arvore)->nome_cliente, "") == 0)
 		return;
 
@@ -176,23 +175,22 @@ void excluirNo(tipo_abb **arvore, char tNome_cliente[70]) { //
 		else if (strcmp(tNome_cliente, (*arvore)->nome_cliente) < 0)
 			excluirNo(&(*arvore)->esq, tNome_cliente);
 		else if (((*arvore)->esq != NULL) && ((*arvore)->dir != NULL)) {
-			aux = menor_valor((*arvore)->dir); // variavel aux recebe o endereço do menor valor na subárvore direita
-			strcpy((*arvore)->nome_cliente, (aux->nome_cliente)); // o nó a ser retirado recebe o valor do nó que contem o menor valor da subárvore direita
+			aux = menor_valor((*arvore)->dir);
+			strcpy((*arvore)->nome_cliente, (aux->nome_cliente));
 			(*arvore)->valor_total = (aux->valor_total);
 			(*arvore)->produtos = (aux->produtos);
 			(*arvore)->dataPedido = (aux->dataPedido);
 			excluirNo(&(*arvore)->dir, (*arvore)->nome_cliente);
-		} else { // se o nó só tem um filho ou nenhum
-			aux = *arvore; // variável aux aponta para o nó a ser retirado
-			if ((*arvore)->esq == NULL) // se o nó não tem filho esquerdo
-				*arvore = (*arvore)->dir; // o filho direito assume o lugar do pai
+		} else {
+			aux = *arvore;
+			if ((*arvore)->esq == NULL)
+				*arvore = (*arvore)->dir;
 			else
-				// se o nó nó tem filho direito
-				*arvore = (*arvore)->esq; // o filho esquerdo assume o lugar do pai
+				*arvore = (*arvore)->esq;
 
 			free(aux->dataPedido);
 			free(aux->produtos);
-			free(aux); // libera o nó desejado
+			free(aux);
 			printf("Valor retirado da arvore.");
 		}
 	} else
@@ -200,14 +198,13 @@ void excluirNo(tipo_abb **arvore, char tNome_cliente[70]) { //
 
 }
 
-tipo_abb* menor_valor(tipo_abb *t) { // t aponta para o nó raiz da árvore ou raiz da subárvore
-	if (t == NULL) // se a árvore estiver vazia
+tipo_abb* menor_valor(tipo_abb *t) {
+	if (t == NULL)
 		return NULL;
-	else if (t->esq == NULL) // se o nó não tem filho esquerdo, este é o menor valor da subárvore direita
-		return t; // retorna o endereço do nó que contem o menor valor da subárvore direita
+	else if (t->esq == NULL)
+		return t;
 	else
-		// se o nó tem filho esquerdo
-		return menor_valor(t->esq); // chamada recursiva para continuar a procura do menor valor
+		return menor_valor(t->esq);
 }
 
 void inserirProdutos(ListaDuplaEncadeada *produtos, char tDesc[50], int TQtd,
@@ -224,19 +221,19 @@ void inserirProdutos(ListaDuplaEncadeada *produtos, char tDesc[50], int TQtd,
 		produtos->inicio = nova;
 	} else {
 		Caixinha *aux;
-		aux = produtos->inicio; //aponta para o inicio da lista
-		while (aux->prox != produtos->inicio) //pecorre ate achar o ultimo elemento
+		aux = produtos->inicio;
+		while (aux->prox != produtos->inicio)
 			aux = aux->prox;
 
-		nova->ant = aux; //aux agora sera o anterior
-		nova->prox = produtos->inicio; //o proximo do ultimo elemento sera inicio
-		aux->prox = nova; //o ultimo elemento agora sera nova
-		produtos->inicio->ant = nova; //caso não esteja vazia o anterior do primeiro elemento, aponta para o ultimo
+		nova->ant = aux;
+		nova->prox = produtos->inicio;
+		aux->prox = nova;
+		produtos->inicio->ant = nova;
 	}
 }
 void exibirNaOrdemProdutos(ListaDuplaEncadeada *produtos) { //
 	Caixinha *aux;
-	aux = produtos->inicio; //aponta para o inicio da lista
+	aux = produtos->inicio;
 	if (aux != NULL) {
 		do {
 			if (aux->desc_prod != NULL)
@@ -305,7 +302,7 @@ void exibirDataPedido(DataPedido **tDataPedido) { //
 }
 float valorTotalProdutos(ListaDuplaEncadeada *produtos) { //
 	Caixinha *aux;
-	aux = produtos->inicio; //aponta para o inicio da lista
+	aux = produtos->inicio;
 	float soma = 0;
 	float valorP;
 	int qtd;
