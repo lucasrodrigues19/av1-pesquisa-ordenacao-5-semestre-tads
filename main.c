@@ -38,10 +38,10 @@ typedef struct nodo {
 
 void criarArvore(tipo_abb **arvore);
 void criarLista(ListaDuplaEncadeada *lista);
-void inserir(tipo_abb **t, char tNome_cliente[70]);
-tipo_abb* pesquisar(tipo_abb **t, char tNome_cliente[70]);
+void inserirArvore(tipo_abb **t, char tNome_cliente[70]);
+tipo_abb* pesquisarArvore(tipo_abb **t, char tNome_cliente[70]);
 void printArvore(tipo_abb **arv_encontrada);
-void emOrdem(tipo_abb **No);
+void exibirNaOrdemArvore(tipo_abb **No);
 void excluirNo(tipo_abb **arvore, char tNome_cliente[70]); //
 tipo_abb* menor_valor(tipo_abb *t); //
 void inserirProdutos(ListaDuplaEncadeada *produtos, char tDesc[50], int TQtd,float tValor_prod); //
@@ -64,14 +64,14 @@ int main() {
 	criarArvore(&arvore);
 
 	for (i = 0; i < 3; i++) {
-		printf("\n---DADOS DO CLIENTE ----\n");
+		printf("\n---DADOS DO CLIENTE (%d) ----\n",(i+1));
 		strcpy(tNome_cliente, "");
 		printf("\nNome do cliente: ");
 		gets(tNome_cliente);
 		if (strcmp(tNome_cliente, "") == 0)
 			gets(tNome_cliente);
 
-		inserir(&arvore, tNome_cliente);
+		inserirArvore(&arvore, tNome_cliente);
 	}
 	printf("\n");
 	printf("\n ENCONTRE UM CLIENTE \n");
@@ -80,9 +80,11 @@ int main() {
 	gets(tNome_cliente);
 	if (strcmp(tNome_cliente, "") == 0)
 		gets(tNome_cliente);
-	arv_encontrada = pesquisar(&arvore, tNome_cliente);
+	arv_encontrada = pesquisarArvore(&arvore, tNome_cliente);
 	if (arv_encontrada != NULL)
 		exibirDataValorPedido(&arv_encontrada);
+	else
+		printf("\nCLIENTE NAO ENCONTRADO\n");
 
 	printf("\n");
 	printf("\nREMOVA UM PEDIDO\n");
@@ -96,7 +98,7 @@ int main() {
 
 
 	printf("\n\n--------Em ordem por nome do cliente: ------------\n\n");
-	emOrdem(&arvore);
+	exibirNaOrdemArvore(&arvore);
 
 	printf("\n\nExibir Pedidos acima de: ");
 		scanf("%f",&valorAcima);
@@ -111,7 +113,7 @@ void criarArvore(tipo_abb **arvore) {
 void criarLista(ListaDuplaEncadeada *lista) {
 	lista->inicio = NULL;
 }
-void inserir(tipo_abb **t, char tNome_cliente[70]) {
+void inserirArvore(tipo_abb **t, char tNome_cliente[70]) {
 	if (*t == NULL) {
 		*t = (tipo_abb*) malloc(sizeof(tipo_abb));
 		(*t)->produtos = inserirDadosProduto();
@@ -121,18 +123,18 @@ void inserir(tipo_abb **t, char tNome_cliente[70]) {
 		(*t)->esq = NULL;
 		(*t)->dir = NULL;
 	} else if (strcmp(tNome_cliente, (*t)->nome_cliente) > 0)
-		inserir(&(*t)->dir, tNome_cliente);
+		inserirArvore(&(*t)->dir, tNome_cliente);
 	else
-		inserir(&(*t)->esq, tNome_cliente);
+		inserirArvore(&(*t)->esq, tNome_cliente);
 }
-tipo_abb* pesquisar(tipo_abb **t, char tNome_cliente[70]) {
-	if (t != NULL) {
+tipo_abb* pesquisarArvore(tipo_abb **t, char tNome_cliente[70]) {
+	if (*t != NULL) {
 		if (strcmp((*t)->nome_cliente, tNome_cliente) == 0)
 			return *t;
 		else if (strcmp(tNome_cliente, (*t)->nome_cliente) > 0)
-			pesquisar(&(*t)->dir, tNome_cliente);
+			pesquisarArvore(&(*t)->dir, tNome_cliente);
 		else if (strcmp(tNome_cliente, (*t)->nome_cliente) < 0)
-			pesquisar(&(*t)->esq, tNome_cliente);
+			pesquisarArvore(&(*t)->esq, tNome_cliente);
 		else
 			return NULL;
 	} else
@@ -145,9 +147,9 @@ void printArvore(tipo_abb **arv_encontrada) {
 		exibirNaOrdemProdutos(&(*arv_encontrada)->produtos);
 	}
 }
-void emOrdem(tipo_abb **No) {
+void exibirNaOrdemArvore(tipo_abb **No) {
 	if (*No != NULL) {
-		emOrdem(&((*No)->esq));
+		exibirNaOrdemArvore(&((*No)->esq));
 		printf("\n---------CLIENTE-----------\n");
 		printf("\nNome do cliente: ");
 		puts((*No)->nome_cliente);
@@ -159,7 +161,7 @@ void emOrdem(tipo_abb **No) {
 		printf("Valor total do Pedido: ");
 		printf("%.2f", (*No)->valor_total);
 		printf("\n");
-		emOrdem(&(*No)->dir);
+		exibirNaOrdemArvore(&(*No)->dir);
 
 	}
 }
@@ -256,7 +258,7 @@ ListaDuplaEncadeada* inserirDadosProduto() { //
 	printf("Quantos produtos? ");
 	scanf("%d", &maxP);
 	for (j = 0; j < maxP; j++) {
-		printf("\n----DADOS DO PRODUTO-----\n");
+		printf("\n----DADOS DO PRODUTO (%d)-----\n",(j+1));
 		strcpy(tDesc, "");
 		printf("\nDescricao do produto: ");
 		gets(tDesc);
